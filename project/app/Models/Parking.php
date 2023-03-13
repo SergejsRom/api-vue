@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class Parking extends Model
 {
     use HasFactory;
@@ -25,5 +27,13 @@ class Parking extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+
+    protected static function booted()
+    {
+        static::addGlobalScope('user', function (Builder $builder) {
+            $builder->where('user_id', auth()->id());
+        });
+    }
+
 
 }
